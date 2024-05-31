@@ -5,7 +5,7 @@ defmodule Infrastructure.OpenAi.ClientTest do
   alias Infrastructure.OpenAi
 
   @json Infrastructure.Http.Request.Headers.ContentType.json()
-  @url "https://api.openai.com/v1/chat/completion"
+  @url "https://api.openai.com/v1/chat/completions"
 
   test "handling a request", %{test: test} do
     body = OpenAi.Controls.Response.example("This is a test!")
@@ -24,7 +24,9 @@ defmodule Infrastructure.OpenAi.ClientTest do
       "temperature" => 0.7
     }
 
-    request = Http.Request.new(body: body, headers: [@json], url: @url)
+    headers = [@json, {"Authorization", "Bearer my_api_key"}]
+
+    request = Http.Request.new(body: body, headers: headers, url: @url)
     assert_receive {[:http_client, :post], ^request}
 
     assert {:ok, response} = result

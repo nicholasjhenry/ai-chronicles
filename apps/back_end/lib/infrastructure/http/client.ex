@@ -52,10 +52,11 @@ defmodule Infrastructure.Http.Client do
     struct!(__MODULE__, attrs)
   end
 
-  def post(http_client, url, body) do
-    headers = [
-      Http.Request.Headers.ContentType.json()
-    ]
+  def post(http_client, url, body, custom_headers \\ []) do
+    headers =
+      [
+        Http.Request.Headers.ContentType.json()
+      ] ++ custom_headers
 
     with {:ok, httpoison_response} <-
            http_client.http_poison.post(url, Jason.encode!(body), headers) do

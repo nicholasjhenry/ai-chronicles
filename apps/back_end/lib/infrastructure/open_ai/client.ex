@@ -6,7 +6,7 @@ defmodule Infrastructure.OpenAi.Client do
 
   defstruct [:http_client, :api_key]
 
-  @url "https://api.openai.com/v1/chat/completion"
+  @url "https://api.openai.com/v1/chat/completions"
 
   def create_null(attrs \\ []) do
     attrs = Keyword.validate!(attrs, [:response])
@@ -45,6 +45,10 @@ defmodule Infrastructure.OpenAi.Client do
         temperature: 0.7
       )
 
-    Http.Client.post(open_ai_client.http_client, @url, request_body)
+    headers = [
+      {"Authorization", "Bearer #{open_ai_client.api_key}"}
+    ]
+
+    Http.Client.post(open_ai_client.http_client, @url, request_body, headers)
   end
 end

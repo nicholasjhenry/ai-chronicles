@@ -17,11 +17,17 @@ defmodule BackEnd.MixProject do
 
   def application do
     [
-      extra_applications: [:logger]
+      extra_applications: [:logger],
+      mod: {BackEnd.Application, []}
     ]
   end
 
   defp deps do
-    []
+    [
+      {:broadway, "~> 1.0"},
+      {:httpoison, "~> 2.0"},
+      {:jason, "~> 1.4"},
+      {:mimic, "~> 1.7", only: :test}
+    ]
   end
 end
